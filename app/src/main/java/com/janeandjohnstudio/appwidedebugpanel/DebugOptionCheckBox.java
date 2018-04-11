@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class DebugOptionCheckBox extends LinearLayout {
 
-  public DebugOptionCheckBox(Context context, String title, boolean checked, final Callback callback) {
+  public DebugOptionCheckBox(Context context, String title, boolean checked, Callback callback) {
     super(context);
 
     setOrientation(LinearLayout.HORIZONTAL);
@@ -34,6 +34,7 @@ public class DebugOptionCheckBox extends LinearLayout {
   }
 
   public interface Callback {
+
     void onClick(boolean isChecked);
   }
 }

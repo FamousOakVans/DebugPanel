@@ -5,7 +5,6 @@ import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.support.v4.widget.DrawerLayout;
@@ -24,26 +23,28 @@ import io.reactivex.subjects.Subject;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressLint({"InflateParams", "StaticFieldLeak", "CheckResult", "ApplySharedPref"})
+@SuppressWarnings({"InflateParams", "StaticFieldLeak", "CheckResult", "ApplySharedPref",
+    "WeakerAccess", "SimplifiableIfStatement", "unused"})
 public class DebugPanel {
 
   private static DebugPanel INSTANCE;
+
+  private long flags = 0;
+  public static final long OVERLAY = 1 << 0;
+  public static final long PORTFOLIO = 1 << 1;
+  public static final long OFFERS = 1 << 2;
+  public static final long AUTH = 1 << 3;
+
+  private Activity a;
+
   private DrawerLayout drawer;
   private ViewGroup root;
-
   private LinearLayout llOverlay;
   private TextView tvActivity;
   private TextView tvRequest;
-
-  private long flags = 0;
-  private static final long OVERLAY = 1 << 0;
-  private static final long PORTFOLIO = 1 << 1;
-  private static final long OFFERS = 1 << 2;
-  private static final long AUTH = 1 << 3;
-
   private LinearLayout content;
+
   private Subject<String> reqSubject = BehaviorSubject.create();
-  private Activity a;
 
   private DebugPanel() {
     reqSubject.onNext("None");
@@ -54,6 +55,10 @@ public class DebugPanel {
       INSTANCE = new DebugPanel();
     }
     return INSTANCE;
+  }
+
+  public long getFlags() {
+    return flags;
   }
 
   public Subject<String> getReqSubject() {
@@ -128,7 +133,6 @@ public class DebugPanel {
   }
 
   public void remove() {
-    drawer.removeView(root);
     a.setContentView(root);
     root = null;
   }
